@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Scorecard</title>
+    <meta name="keywords" content="Control TreeTable Table" />
+    </script>
+        <script id="sap-ui-bootstrap"
+            src="http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5/resources/sap-ui-core.js"
+            data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.ui.ux3"></script>
+
+
+<script id='TreeTableExampleScript1' type="text/javascript">
+
+oModel = new sap.ui.model.xml.XMLModel();
+oModel.setXML(
+"<?xml version='1.0' encoding='iso-8859-1'?>" +
+   " <asx:abap xmlns:asx='http://www.sap.com/abapxml' version='1.0'>"+
+        "<asx:values>" +
+            "<LOAD_ENTITY> "+
+               " <ENTITY_NR>01200314690900002457</ENTITY_NR> " + 
+                "<ENTITY_NAME>EHP6 FOR SAP ERP 6.0</ENTITY_NAME>" + 
+                "<DESCRIPTION>Root Product Version</DESCRIPTION>" + 
+               " <RELATED_ENTITY_NAME>05 (11/2012)</RELATED_ENTITY_NAME>" + 
+                "<RELATED_ENTITY_NR>67837800103300004458</RELATED_ENTITY_NR>" + 
+                "<SELECTED/>" + 
+                "<REQUIRED/> " + 
+                 " <LOAD_ENTITY>" + 
+                   "<ENTITY_NR>01200314694900009115</ENTITY_NR>" + 
+                   " <ENTITY_NAME>ABAP Technology for ERP EHP6</ENTITY_NAME>" + 
+                   " <DESCRIPTION/>" + 
+                    "    <RELATED_ENTITY_NAME/>" + 
+                     "   <RELATED_ENTITY_NR/>" + 
+                      "  <SELECTED/>" + 
+                       " <REQUIRED/>" + 
+                    "</LOAD_ENTITY>" + 
+                    "<LOAD_ENTITY>" + 
+                     "   <ENTITY_NR>01200314694900009062</ENTITY_NR>" + 
+                      "  <ENTITY_NAME>Catch Weight Management</ENTITY_NAME>" + 
+                       " <DESCRIPTION/>" + 
+                        "<RELATED_ENTITY_NAME/>" + 
+                        "<RELATED_ENTITY_NR/>" + 
+                        "<SELECTED/>" + 
+                        "<REQUIRED/>" + 
+                   " </LOAD_ENTITY>" + 
+                    "  </LOAD_ENTITY>" + 
+       " </asx:values>" + 
+   " </asx:abap>"
+);
+
+//Create an instance of the table control
+var oTable = new sap.ui.table.TreeTable({
+	columns: [
+		new sap.ui.table.Column({label: "Name", template: "ENTITY_NR"})
+	],
+	selectionMode: sap.ui.table.SelectionMode.Single,
+	allowColumnReordering: true,
+	toggleOpenState: function(oEvent) {
+		var iRowIndex = oEvent.getParameter("rowIndex");
+		var oRowContext = oEvent.getParameter("rowContext");
+		var bExpanded = oEvent.getParameter("expanded");
+		alert("rowIndex: " + iRowIndex +
+				" - rowContext: " + oRowContext.getPath() +
+				" - expanded? " + bExpanded);
+	}
+});
+
+oTable.setModel(oModel);
+	oTable.bindRows("/asx:values");
+
+//Bring the table onto the UI
+oTable.placeAt("sample1");
+
+</script>
+
+	</head>
+	<div id="sample1"></div>
+
+</body>
+</html>
+<!-- user:Mariano Santangelo --><!-- description:Try to populate a TreeTable with Rest call result -->
+<!-- user:raghu --><!-- description:treetable binding with xml code -->

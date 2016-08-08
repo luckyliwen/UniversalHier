@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+//		var aOrgHierarchie = [];
+	var oData = {
+    		root:{
+    			name: "root",
+    			description: "root description",
+    			checked: false,
+    			0: {
+    				name: "item1",
+        			description: "item1 description",
+        			checked: true,
+    				0: {
+    					name: "subitem1-1",
+            			description: "subitem1-1 description",
+            			checked: true,
+    					0: {
+    						name: "subsubitem1-1-1",
+   		        			description: "subsubitem1-1-1 description",
+   		        			checked: true,
+							0: {
+								name: "subsubitem1-1-1",
+								description: "subsubitem1-1-1 description",
+								checked: true
+							},
+    					},
+    					1: {
+    						name: "subsubitem1-1-2",
+   		        			description: "subsubitem1-1-2 description",
+   		        			checked: true
+    					}
+    				},
+    				1: {
+    					name: "subitem1-2",
+	        			description: "subitem1-2 description",
+  		        		checked: true,
+    					0: {
+    						name: "subsubitem1-2-1",
+   		        			description: "subsubitem1-2-1 description",
+   		        			checked: true
+    					}
+    				}
+    				
+    			},
+    			1:{
+    				name: "item2",
+        			description: "item2 description",
+        			checked: true,
+    				0: {
+    					name: "subitem2-1",
+	        			description: "subitem2-1 description",
+	        			checked: true
+    				}
+    			},
+    			2:{
+    				name: "item3",
+        			description: "item3 description",
+        			checked: true
+    			}
+    			
+    		}
+    			
+    };
+ var oModel = new sap.ui.model.json.JSONModel();
+    oModel.setData(oData);
+		
+		var oContentHierPanel = new sap.ui.commons.layout.MatrixLayout({
+			layoutFixed: true,
+			width: '100%',
+			columns: 1
+		});
+			
+		var that = this;			
+		// table with org hierarchy
+		var oCheckBox = new sap.ui.commons.CheckBox();
+		oCheckBox.bindProperty("text", "name");
+		oCheckBox.bindProperty("checked", "checked");
+        
+	    oCheckBox.attachChange(function(oEvent) {          
+            var oContext = this.getBindingContext();
+            var oBinding = oTable.getBinding("rows");
+            bHierChanged = true;
+        });
+	    
+	   
+		//Create an instance of the table control
+	    var oTable = new sap.ui.table.TreeTable({
+	    	id: "hierTable",
+	    	visibleRowCount: 23,
+	    	columnHeaderVisible: false,
+	    	selectionMode: sap.ui.table.SelectionMode.None,
+	    	allowColumnReordering: false,
+	    	columns: [
+	    	          new sap.ui.table.Column({label: "Checked",template: oCheckBox, width: "170px", styleclass: "lrmDeuBa" }),		
+	    	          new sap.ui.table.Column({label: "Description", template: "description", styleclass: "lrmDeuBa"})
+	    	          ],
+	    	expandFirstLevel: true
+	    });
+
+		oTable.setModel(oModel);
+		oTable.bindRows("/root");
+	    var oRows = oTable.getRows();
+	    
+	    
+	    oContentHierPanel.createRow(oTable);
+	    oContentHierPanel.placeAt('content');
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user:Ingo Fenske --><!-- description:TreeTable: PProblem with expand -->

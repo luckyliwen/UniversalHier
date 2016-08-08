@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+sap.ui.core.Control.extend(
+	"TreetableCell", {
+		metadata : {
+			properties : {
+				sellInOutObj : {type : "object"},
+				sellInOutText : {type : "string"},
+				index: {type: "int"}
+			},
+			aggregations : {}
+		},
+	
+		onBeforeRendering : function() {
+	
+		},
+	
+		renderer : function(oRm, oControl) {  
+ 
+			if (oControl.getSellInOutObj()) {
+				oRm.write("<table><tr>");
+	
+				if (oControl.getSellInOutObj()[oControl.getIndex()].sellin)
+					oRm.write("<td>" + oControl.getSellInOutObj()[oControl.getIndex()].sellin) + "</td>";
+				if (oControl.getSellInOutObj()[oControl.getIndex()].sellout)
+					oRm.write("<td>" + oControl.getSellInOutObj()[oControl.getIndex()].sellout + "</td>");
+				if (oControl.getSellInOutObj()[oControl.getIndex()].delta)
+					oRm.write("<td>" + oControl.getSellInOutObj()[oControl.getIndex()].delta + "</td>");
+	
+				oRm.write("</tr></table>");
+				return;
+			}
+			
+			if (oControl.getSellInOutText()) {
+				oRm.write(oControl.getSellInOutText());
+				return;
+			}
+			
+		},
+	
+		onAfterRendering : function() {
+	
+		},
+	
+	});
+		
+				var oData = {
+				root:{
+					0: {
+						name: "Beverages - ALL",
+						dates:[
+								{
+									title: "Total",
+									sellin: "11,626",
+					    			sellout: "11,353",
+					    			delta: "-11,726",
+								},
+								{
+									title: "January 2012",
+									sellin: "22,626",
+					    			sellout: "22,353",
+					    			delta: "-22,726",
+								},
+								{
+									title: "Feb 2012",
+									sellin: "33,626",
+					    			sellout: "33,353",
+					    			delta: "-33,726",
+								},
+							
+						],
+						
+						0: {
+							name: "Coke",
+							dates:[
+									{
+										title: "Total",
+										sellin: "44,626",
+						    			sellout: "44,353",
+						    			delta: "-44,726",
+									},
+									{
+										title: "January 2012",
+										sellin: "55,626",
+						    			sellout: "66,353",
+						    			delta: "-77,726",
+									},
+									{
+										title: "Feb 2012",
+										sellin: "44,626",
+						    			sellout: "33,353",
+						    			delta: "-33,726",
+									},
+								
+							],
+						},
+					},
+					
+					1: {
+						name: "Snacks",
+						dates:[
+								{
+									title: "Total",
+									sellin: "23,626",
+					    			sellout: "56,353",
+					    			delta: "-40,726",
+								},
+								{
+									title: "January 2012",
+									sellin: "64,626",
+					    			sellout: "65,353",
+					    			delta: "-78,726",
+								},
+								{
+									title: "Feb 2012",
+									sellin: "98,626",
+					    			sellout: "45,353",
+					    			delta: "-45,726",
+								},
+							
+						],
+					},
+					
+				}
+		};
+		
+
+		
+jQuery.sap.require("sap.ui.table.Column");
+							
+		var dateObj = oData.root[0].dates;
+		var columnsDate = new Array();
+		
+		columnsDate.push(
+				new sap.ui.table.Column({
+	        	  label: "Location Hierarchy" , 
+	        	  template: new TreetableCell({ index: i , sellInOutText : "{name}" }),
+	          }));
+		
+		
+		for (var i = 0 ; i < dateObj.length ; i++){
+			columnsDate.push(
+				new sap.ui.table.Column({
+	        	  label: dateObj[i].title , 
+	        	  template: new TreetableCell({ index: i , sellInOutObj : "{dates}" }),
+	          }));
+		}
+		
+		//Create an instance of the table control
+		var oTable = new sap.ui.table.TreeTable({
+			columns: columnsDate,
+			selectionMode: sap.ui.table.SelectionMode.Single,
+			visibleRowCountMode : sap.ui.table.VisibleRowCountMode.Fixed,
+			allowColumnReordering: true,
+			expandFirstLevel: true,
+			width : '100%',
+			visibleRowCount : 14,
+			//fixedColumnCount : 2,
+		});
+		
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oData);
+		oTable.setModel(oModel);
+		oTable.bindRows("/root");
+
+		oTable.placeAt("content");
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user:Cristiano Santos --><!-- description:TreeTable - Extra lines, error. -->

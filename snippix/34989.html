@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>test</title>
+
+    <script id='sap-ui-bootstrap' type='text/javascript'
+        src='http://veui5infra.dhcp.wdf.sap.corp:8080/uilib-sample/resources/sap-ui-core.js'
+        data-sap-ui-theme='sap_goldreflection'
+        data-sap-ui-libs='sap.ui.commons,sap.ui.table,sap.ui.ux3'></script>
+
+	<style>    
+    
+		        .myTable {
+		            color: black;
+		        }
+		        
+		        
+		    </style>
+	
+<script>
+	
+    
+		var oData = {
+                  root:{
+                          name: "root",
+                          description: "root description",
+                          checked: false,
+                          0: {
+                                  name: "item1",
+                          description: "item1 description",
+                          checked: true,
+                                  0: {
+                                          name: "subitem1-1",
+                                  description: "subitem1-1 description",
+                                  checked: true,
+                                          0: {
+                                                  name: "subsubitem1-1-1",
+                                                  description: "subsubitem1-1-1 description",
+                                                  checked: true
+                                          },
+                                          1: {
+                                                  name: "subsubitem1-1-2",
+                                                  description: "subsubitem1-1-2 description",
+                                                  checked: true
+                                          }
+                                  },
+                                  1: {
+                                          name: "subitem1-2",
+                                  description: "subitem1-2 description",
+                                          checked: true,
+                                          0: {
+                                                  name: "subsubitem1-2-1",
+                                                  description: "subsubitem1-2-1 description",
+                                                  checked: true
+                                          }
+                                  }
+                                  
+                          },
+                          1:{
+                                  name: "item2",
+                          description: "item2 description",
+                          checked: true,
+                                  0: {
+                                          name: "subitem2-1",
+                                  description: "subitem2-1 description",
+                                  checked: true
+                                  }
+                          },
+                          2:{
+                                  name: "item3",
+                          description: "item3 description",
+                          checked: true
+                          }
+                          
+                  }
+		  };
+
+		  var oTable = new sap.ui.table.TreeTable({
+				  columns: [
+						  new sap.ui.table.Column({label: "Name", template: "name"}),
+						  new sap.ui.table.Column({label: "Description", template: "description"})
+				  ],
+				  selectionMode: sap.ui.table.SelectionMode.Single,
+				  allowColumnReordering: true,
+				  expandFirstLevel: true
+		   });
+		  oTable.addStyleClass("myTable");
+		
+		  //Create a model and bind the table rows to this model
+		  var oModel = new sap.ui.model.json.JSONModel();
+		  oModel.setData(oData);
+		  oTable.setModel(oModel);
+		  oTable.bindRows("/root");
+
+   	  
+		  var ToolPopup = new sap.ui.ux3.ToolPopup( {
+				inverted:true,
+				title:"Tree Table",
+				content:[
+				         	oTable
+				         ],
+		       buttons:[
+		                new sap.ui.commons.Button({text:"CLOSE",press:function(){
+		              	  	ToolPopup.close();
+		              	  }})
+		                ]
+			});
+  
+		  var oLink1 = new sap.ui.commons.Link({
+				text: "Link to Action", 
+				press: function() {
+					
+					ToolPopup.open(sap.ui.core.Popup.Dock.BeginTop,
+							sap.ui.core.Popup.Dock.BeginBottom);
+					
+					ToolPopup.setPosition(sap.ui.core.Popup.Dock.BeginTop, sap.ui.core.Popup.Dock.BeginBottom, oLink1.getDomRef(), "0 -13", "none");
+
+
+				 }
+		   });
+
+    	  
+    	     var appShell = new sap.ui.ux3.Shell({
+				  id : "main-shell",
+				  appTitle : 'SAP OEE 1.0',
+				  showLogoutButton : true,
+				  showTools : true,
+				  showPane : true,
+				  worksetItems: [
+								 new sap.ui.ux3.NavigationItem("wi_link",{key:"wi_link",text:"TreeTable in ToolPopup"}),
+								 new sap.ui.ux3.NavigationItem("wi_treeTable",{key:"wi_treeTable",text:"Independent TreeTable"})
+								],
+				  worksetItemSelected: function(oEvent){
+	
+							var sId = oEvent.getParameter("id");
+							var oShell = oEvent.oSource;
+							switch (sId) {
+							case "wi_link":
+								oShell.setContent(oLink1);
+								break;
+							case "wi_treeTable":
+								oShell.setContent(oTable);
+								break;
+							default:
+								break;
+							}
+					}
+    	  });
+    	  appShell.setContent(oLink1);
+  	  
+    	  appShell.placeAt("content");
+    
+</script>
+
+</head>
+<body class='sapUiBody'>
+    <div id='content'></div>
+</body>
+</html>
+<!-- user:d039071 --><!-- description:DataTable: Custom Events on Cell Click -->
+<!-- user:Frank Weigel --><!-- description:Row Specific Actions in a DataTable -->
+<!-- user:Raja --><!-- description:TreeTable in ToolPopup -->

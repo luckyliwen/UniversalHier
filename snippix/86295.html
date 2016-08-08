@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3, sap.ui.table'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+				//Create an instance of the table control
+		var oTable = new sap.ui.table.TreeTable("ppResultTreeTable", {
+			columns: [
+					new sap.ui.table.Column("ppNo", {label: "PP No./Item No.", template: (new sap.ui.commons.TextView({text: "{ObjectID}"})), width: "70px",  sortProperty: "ppNo", filterProperty: "ppNo"}),
+					new sap.ui.table.Column("ppName", {label: "PP Name", template: "Description", width: "120px"}),
+					new sap.ui.table.Column("RFxType", {label: "RFx Type", template: "BidType", width: "90px"}),
+					new sap.ui.table.Column("publicationType", {label: "Publication Type", template: "ProcessType", width: "120px"}),
+					new sap.ui.table.Column("purchasingRegDoc", {label: "Pur. Reg. Doc.", template: "RegulationDocumentType", width: "120px"}),
+					new sap.ui.table.Column("purchasingType", {label: "Purchasing Type", template: "PurchasingType", width: "120px"}),
+					new sap.ui.table.Column("planningYear", {label: "Planning Year", template: "PlanningYear", width: "120px"}),
+					new sap.ui.table.Column("status", {label: "Status", template: "Status", width: "120px"}),
+					new sap.ui.table.Column("planningStatus", {label: "Planning Status", template: "PlanningStatus", width: "90px"}),
+					new sap.ui.table.Column("companyCode", {label: "Company Code", template: "CompanyCode", width: "90px"}),
+					new sap.ui.table.Column("purchasingOrganizer", {label: "Purchasing Organizer", template: "PurchasingGroup", width: "90px"}),
+					new sap.ui.table.Column("purchasingOrganization", {label: "Purchasing Organization", template: "PurchasingOrganization", width: "90px"}),
+					new sap.ui.table.Column("startDate", {label: "Start Date", template: "PPStartDate", width: "90px"}),
+					new sap.ui.table.Column("submissionDeadline", {label: "Submission Deadline", template: "SubmissionDeadline", width: "90px"}),
+					new sap.ui.table.Column("plannedValue", {label: "Planned Value", template: "PlannedAmount", width: "90px"}),
+					new sap.ui.table.Column("vatAmt", {label: "VAT Amt", template: "VatAmount", width: "90px"}),
+					new sap.ui.table.Column("totalAmt", {label: "Total Amt", template: "TotalAmount", width: "90px"}),
+					new sap.ui.table.Column("currency", {label: "Currency", template: "Currency", width: "90px"}),
+					new sap.ui.table.Column("purchasePriority", {label: "Purchase Priority", template: "PurchasePriority", width: "90px"}),
+					new sap.ui.table.Column("vatCode", {label: "VAT Code", template: "VatCode", width: "90px"}),
+					new sap.ui.table.Column("purchObjectDesc", {label: "Purchase Object", template: "PurchaseNote" , width: "90px", visible: false}),
+					new sap.ui.table.Column("reasonForPurch", {label: "Reason", template: "ReasonNote", width: "90px", visible: false}),		
+//					new sap.ui.table.Column("purchaseObjectDescription", {label: "Purchase Object Desc.", template: oControle1 , width: "90px"}),
+//					new sap.ui.table.Column("reasonForPurchase", {label: "Reason for Purchase", template: oControle2, width: "90px"}),						
+                    new sap.ui.table.Column("purchasingCommitte", {label: "Purchasing Committe", template: "PurchasingCommittee", width: "90px"}),
+					new sap.ui.table.Column("createdOn", {label: "Created On", template: "createdOn", width: "90px"}),
+//					new sap.ui.table.Column("i_lineNumber", {label: "Line No.", template: "NumberInt", width: "90px"}),
+					new sap.ui.table.Column("i_itemType", {label: "Item Type", template: "ItemType", width: "70px"}),
+					new sap.ui.table.Column("i_lotNumber", {label: "Lot No.", template: "LotNumber", width: "80px"}),
+					new sap.ui.table.Column("i_productID", {label: "Product ID", template: "ProductID", width: "70px"}),
+					new sap.ui.table.Column("i_description", {label: "Description", template: "ProductDescription", width: "90px"}),
+					new sap.ui.table.Column("i_productCategory", {label: "Product Category", template: "ProductCategory", width: "110px"}),
+//					new sap.ui.table.Column("i_productCategoryDescription", {label: "Product Category Desc.", template: "productCategoryDescription", width: "180px"}),
+					new sap.ui.table.Column("i_Unit", {label: "Unit", template: "Unit", width: "50px"}),
+					new sap.ui.table.Column("i_PricePerUnit", {label: "Price Per Unit", template: "PriceUnit", width: "110px"}),
+					new sap.ui.table.Column("i_Quantity", {label: "Quantity", template: "Quantity", width: "60px"}),
+					new sap.ui.table.Column("i_Currency", {label: "Currency", template: "ICurrency", width: "70px"}),
+					new sap.ui.table.Column("i_DeliveryDate", {label: "Delivery Date", template: "DeliveryDate", width: "90px"}),
+					new sap.ui.table.Column("i_ValueWithoutVat", {label: "Value excl. VAT", template: "IPlannedAmount", width: "130px"}),
+					new sap.ui.table.Column("i_AmountVAT", {label: "VAT Amt.", template: "IVatAmount", width: "130px"}),
+					new sap.ui.table.Column("i_totalAmt", {label: "Total Amt", template: "ITotalAmount", width: "100px"}),
+					new sap.ui.table.Column("i_CompanyCode", {label: "Company Code", template: "ICompanyCode", width: "100px"}),
+					new sap.ui.table.Column("i_FinancingSource", {label: "Financing Source", template: "FinancingSource", width: "120px"}),
+					],
+			width: "100%",
+			selectionMode: sap.ui.table.SelectionMode.None,
+			visibleRowCount: 10,
+			allowColumnReordering: true,
+		});
+		
+		//oCore.byId('ppNo').getTemplate().bindProperty("tooltip", createQuickView()),
+		
+      oTable.addEventDelegate({
+          onAfterRendering:function() {
+
+          	$("#ppNo, #ppName, #RFxType, #publicationType, #purchasingRegDoc, #purchasingType, #planningYear, #status, #planningStatus, #companyCode, #purchasingOrganizer, #purchasingOrganization, #startDate, #submissionDeadline, #plannedValue, #vatAmt, #totalAmt, #currency, #purchasePriority, #vatCode, #purchaseObjectDescription, #reasonForPurchase, #purchasingCommitte, #createdOn").css('background-color', 'skyblue');
+      		$("#i_lotNumber, #i_itemType, #i_productID, #i_description, #i_productCategory, #i_Unit, #i_PricePerUnit, #i_Quantity, #i_Currency, #i_DeliveryDate, #i_ValueWithoutVat, #i_AmountVAT, #i_totalAmt, #i_CompanyCode, #i_purchasingOrganizer, #i_purchasingOrganization, #i_FinancingSource, #i_SCNo, #i_LotDescription").css('background-color', '#2AA2DE');
+      		//$("#i_lotNumber").css('background-color', '#FFC04D');
+          }
+      });
+
+				
+		oModel = new sap.ui.model.json.JSONModel();
+				oTable.setModel(oModel);
+		oTable.bindRows("/", oTable);
+				//return oTable;
+		oTable.placeAt('content');
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user:I077032 --><!-- description:treetable bug -->

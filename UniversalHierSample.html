@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>test</title>
+
+<script id="sap-ui-bootstrap"
+        type="text/javascript"
+        src="../1.21/resources/sap-ui-core-all-dbg.js"
+        data-sap-ui-xx-bindingSyntax="complex"
+        data-sap-ui-theme="sap_bluecrystal"
+        data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.m"></script>
+
+<style type="text/css">
+</style>
+<script>
+    sap.ui.localResources("fin");
+    //src="../1.21/resources/sap-ui-core-all-dbg.js"
+    //  src= 'http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5/resources/sap-ui-core-all-dbg.js'        
+</script>
+
+<script  src="fin/rc/hier/UniversalHier.js"></script> 
+<script  src="SampleDemoData.js"> </script>
+<script  src="UniversalHierSampleApp.js"> </script>
+
+<script>
+/*    var oUniversalHier = createSampleUniversalHier(true);
+    oUniversalHier.placeAt("content");
+*/
+    //??just for debug 
+    var app = createSampleApp(true);
+    // var app = createSampleApp(false);
+    app.placeAt('content');
+</script>
+
+</head>
+
+<body class='sapUiBody' style="height: 100%;">
+    <div id='content'></div>
+</body>
+
+</html>

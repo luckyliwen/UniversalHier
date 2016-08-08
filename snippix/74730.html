@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'
+			></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+		var JSONDataSource = {
+    "RootNode": {
+        "XSDName": "entry.xsd",
+        "XSDPath": "C:\\blah\\entry.xsd",
+        "childNodes": [
+            {
+                "XSDName": "Link1.xsd",
+                "XSDPath": "C:\\Blah\\Link1.xsd",
+                "childNodes": [
+                    {
+                        "XSDName": "Link2.xsd",
+                        "XSDPath": "C:\\Blah\\Link2.xsd",
+                        "childNodes": [
+                            {
+                                "XSDName": "Link5.xsd",
+                                "XSDPath": "C:\\Blah\\Link5.xsd",
+                                "childNodes": null
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "XSDName": "Link3.xsd",
+                "XSDPath": "C:\\Blah\\Link3.xsd",
+                "childNodes": [
+                    {
+                        "XSDName": "Link6.xsd",
+                        "XSDPath": "C:\\Blah\\Link6.xsd",
+                        "childNodes": null
+                    }
+                ]
+            },
+            {
+                "XSDName": "Link4.xsd",
+                "XSDPath": "C:\\Blah\\Link4.xsd",
+                "childNodes": null
+            }
+        ]
+    }
+};
+		var treeModel = new sap.ui.model.json.JSONModel();
+		treeModel.setData(JSONDataSource);
+		
+		
+		//create the Tree control
+		/*var oTree = new sap.ui.commons.Tree("tree");
+		oTree.setTitle("Explorer");
+		oTree.setWidth("100%");
+		oTree.setHeight("auto");
+		oTree.setShowHeaderIcons(true);
+		oTree.setShowHorizontalScrollbar(false);
+
+		var node = new sap.ui.commons.TreeNode({text:"{XSDName}",expanded:true});
+	
+		
+		node.bindAggregation("nodes", "/childNodes", node);
+		
+		//create Tree Nodes
+		
+		oTree.bindNodes( "/RootNode", node);
+		oTree.setModel(treeModel);
+		oTree.placeAt("content");
+		
+	*/	
+		
+		
+		var oTable = new sap.ui.table.TreeTable({
+	columns: [
+		new sap.ui.table.Column({label: "Name", template: "XSDName"}),
+		new sap.ui.table.Column({label: "Description", template: "XSDPath"})
+	],
+	selectionMode: sap.ui.table.SelectionMode.Single,
+	allowColumnReordering: true,
+	expandFirstLevel: true
+	
+});
+		
+		var oModel = new sap.ui.model.json.JSONModel();
+
+oTable.setModel(treeModel);
+oTable.bindRows("/RootNode");
+		
+	oTable.placeAt("content");	
+		
+		var button = new sap.ui.commons.Button({press:function(){
+		
+		
+			
+			
+		}
+		});
+												
+								
+			button.placeAt("content");
+
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html
+
+<!-- user:shruthi --><!-- description:testtreebinding -->
+<!-- user:Shruthi Annappa --><!-- description:tree binding -->
+<!-- user:Shruthi Annappa --><!-- description:TreeTable -->

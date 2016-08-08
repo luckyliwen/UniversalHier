@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>test</title>
+
+    <script id='sap-ui-bootstrap' type='text/javascript'
+        src="../../1.21/resources/sap-ui-core-all-dbg.js"
+        data-sap-ui-theme='sap_goldreflection'
+        data-sap-ui-libs='sap.ui.commons,sap.ui.ux3'></script>
+        <!-- add 'sap.ui.table' library if required -->
+
+<script>
+      		 try{
+			sap.ui.getCore().loadLibrary("sap.ui.commons");
+		    sap.ui.getCore().loadLibrary("sap.ui.table");
+		}catch(e){
+			alert("This test page requires the library 'sap.ui.commons' which is not available.");
+			throw(e);
+		}
+
+	    // data has to be tree structured
+	    var oData = {
+	    		
+  root: {
+    name: "root",
+    occurrences: 1,
+      0: {
+        name: "HCI",
+        occurrences: 2,
+          0: {
+            name: "NPVS",
+            occurrences: 3,
+              0: {
+                name: "0N01",
+                occurrences: 4,
+                  0: {
+                    name: "L0N01F00",
+                    occurrences: 8,
+                    offset: 0,
+                    origin: "1FCFBFC67EFACF00ACAAC55B06CB4684",
+                    sysid: "HCI"
+                  }
+
+              },
+              1: {
+                name: "0N01",
+                occurrences: 4,
+
+                  0: {
+                    name: "L0N01F00",
+                    occurrences: 8,
+                    offset: 0,
+                    origin: "1FCFBFC67EFACF00ACAAC55B06CB4684",
+                    sysid: "HCI",
+                    
+                  }
+
+              }
+
+          }
+
+      }
+
+  }
+
+	    };
+		  var oModel = new sap.ui.model.json.JSONModel();
+		  // set the data to the model
+		  oModel.setData(oData);
+	      
+	var oTree = new sap.ui.table.TreeTable({
+			  columns: [
+			  new sap.ui.table.Column({label: "Name", template: "name"}),
+			  new sap.ui.table.Column({label: "Occurrences", template: "occurrences"})
+				  ],
+					  selectionMode : sap.ui.table.SelectionMode.Single,
+						  allowColumnReordering: true,
+							  expandFirstLevel : true
+								  
+	});
+	//  oTree.setWidth("30%");
+	      // set the model to the tree
+	      oTree.setModel(oModel);
+		  oTree.bindRows("/root");
+	
+	      
+	      oTree.placeAt("content");
+	      
+
+	
+		
+		              </script>
+    
+
+</head>
+<body class='sapUiBody'>
+    <div id='content'></div>
+</body>
+</html>
+<!-- user:Michael --><!-- description:TreeTable Example -->

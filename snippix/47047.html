@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>TreeTable - sap.ui.table</title>
+<link rel="shortcut icon" type="image/x-icon" href="http://veui5infra.dhcp.wdf.sap.corp:8080/uilib-sample/test-resources/sap/ui/table/images/controls/sap.ui.table.TreeTable.gif">
+
+<!-- ********************************************************************** -->
+<!-- SAPUI5 Bootstrap:                                                     -->
+<!-- Extend the "libs" property if you like to import additional libraries  -->
+<!-- ********************************************************************** -->
+<script id="sap-ui-bootstrap" 
+	type="text/javascript"
+	data-sap-ui-libs="sap.ui.commons,sap.ui.table"
+	data-sap-ui-theme="sap_bluecrystal"
+	src="http://veui5infra.dhcp.wdf.sap.corp:8080/uilib-sample/test-resources/sap/ui/table/../../../../resources/sap-ui-core.js"></script>
+
+<script type="text/javascript">	
+	
+    var oData = {
+    		root:{
+    			name: "Modules",
+    			description: "System Generated Estimates",
+				description1: "New Estimates",
+    			checked: true,
+    			0: {
+    				name: "Organizational management",
+        			description: "13",
+					description1: "10",
+        			checked: true,
+    				0: {
+    					name: "Business Blueprint",
+            			description: "5",
+						description1: "4",
+            			checked: true,
+    					
+    				},
+    				1: {
+    					name: "Final preparation",
+	        			description: "4",
+						description1: "3",
+  		        		checked: true,
+    					
+    				},
+					2: {
+    					name: "Realization",
+	        			description: "4",
+						description1: "3",
+  		        		checked: true,
+    					
+    				}
+    				
+    			}
+    			
+    			
+    		}
+    			
+    };
+    
+    
+    var oModel = new sap.ui.model.json.JSONModel();
+    oModel.setData(oData);
+    
+	var hcTemplate= new sap.ui.commons.TextField({ editable:"{checked }"}).bindProperty("value", "description1");
+	var oTable = new sap.ui.table.TreeTable({
+		title: "Time Estimates",
+		toolbar: new sap.ui.commons.Toolbar({
+			items: [
+				new sap.ui.commons.Button({text: "Expand",
+					press: function() {
+						var iSelectedIndex = oTable.getSelectedIndex();
+						oTable.getBinding("rows").expandContext(oTable.getContextByIndex(iSelectedIndex));
+						oTable.setSelectedIndex(iSelectedIndex);
+					}
+				}),
+				new sap.ui.commons.Button({text: "Collapse",
+					press: function() {
+						var iSelectedIndex = oTable.getSelectedIndex();
+						oTable.getBinding("rows").collapseContext(oTable.getContextByIndex(iSelectedIndex));
+						oTable.setSelectedIndex(iSelectedIndex);
+					}
+				})
+			]
+		}),
+		columns: [
+			new sap.ui.table.Column({label: "Modules", template: "name", filterProperty: "name"}),
+			new sap.ui.table.Column({label: "Estimated Time(weeks)", template: "description", filterProperty: "description"}),
+			new sap.ui.table.Column({label: "Enter new Estimates(weeks)", template: hcTemplate, filterProperty: "description1"})
+		],
+		selectionMode: sap.ui.table.SelectionMode.Single,
+		allowColumnReordering: true,
+		expandFirstLevel: true
+	});
+		
+	oTable.setModel(oModel);
+	oTable.bindRows("/root");
+	
+	oTable.placeAt("content");
+	
+</script>
+
+</head>
+
+<body class="sapUiBody" role="application">
+<h1>Test Page for <code>sap.ui.table.TreeTable</code></h1>
+<p>
+<div id="content"></div>
+</body>
+</html>
+<!-- user:Himanshu Sharma --><!-- description:Project Base TreeTable Small -->

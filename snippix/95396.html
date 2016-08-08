@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+		var oTable = new sap.ui.table.TreeTable({
+			columns:[
+				new sap.ui.table.Column({label:"Column 1", template:"name"}),
+				new sap.ui.table.Column({label:"Column 2", template:"desc"})
+			]
+		});
+		
+		var oData = {
+		items : [ {
+			name : "Item 1",
+			items : [ {
+				name : "Item 1-1",
+				desc:"Desc"
+			}, {
+				name : "Item 1-2"
+			} ]
+		}, {
+			name : "Item 2",
+			items : [ {
+				name : "Item 2-1"
+			}, {
+				name : "Item 2-2"
+			} ]
+		}, {
+			name : "Item 3",
+			items : [ {
+				name : "Item 3-1"
+			}, {
+				name : "Item 3-2"
+			} ]
+		} ]
+	};
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oData);
+		oTable.setModel(oModel);
+		oTable.bindRows("/items");
+		oTable.placeAt('content');
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user:Mouli Kalakota --><!-- description:Sample for setting data in TreeTable -->

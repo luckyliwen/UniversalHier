@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+		var btn = new sap.ui.commons.Button({text:'Hello World'});
+		btn.placeAt('content');
+
+		var aOrgHierarchie = [];
+		
+		var oContentHierPanel = new sap.ui.commons.layout.MatrixLayout({
+			layoutFixed: true,
+			width: '100%',
+			columns: 1
+		});
+			
+		var that = this;			
+		// table with org hierarchy
+		var oCheckBox = new sap.ui.commons.CheckBox();
+		oCheckBox.bindProperty("text", "OrgUnitId");
+		oCheckBox.bindProperty("checked", "checked");
+        
+	    oCheckBox.attachChange(function(oEvent) {          
+            var oContext = this.getBindingContext();
+            var oBinding = oTable.getBinding("rows");
+            bHierChanged = true;
+        });
+	    
+	   
+		//Create an instance of the table control
+	    var oTable = new sap.ui.table.TreeTable({
+	    	id: "hierTable",
+	    	visibleRowCount: 23,
+	    	columnHeaderVisible: false,
+	    	selectionMode: sap.ui.table.SelectionMode.None,
+	    	allowColumnReordering: false,
+	    	columns: [
+	    	          new sap.ui.table.Column({label: "Checked",template: oCheckBox, width: "170px", styleclass: "lrmDeuBa" }),		
+	    	          new sap.ui.table.Column({label: "Description", template: "Description", styleclass: "lrmDeuBa"})
+	    	          ],
+	    	expandFirstLevel: true
+	    });
+//	    oTable.addStyleClass("lrmDeuBa");
+//	    oTable.addStyleClass("lrmDeuBa2");
+//	    oTable.addStyleClass("lrmDeuBaBorder");
+
+//	    oTable.bindRows("/orgHierarchy/root");
+	    oTable.expand(0);
+	    var oRows = oTable.getRows();
+	    for (var i = 0; i < oRows.length; i++) {
+	       oTable.expand(i);
+	    };
+	    
+	    oContentHierPanel.createRow(oTable);
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user:Ingo Fenske --><!-- description:TreeTable: PProblem with expand -->

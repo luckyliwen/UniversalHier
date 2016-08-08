@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Scorecard</title>
+    <meta name="keywords" content="Control TreeTable Table" />
+    </script>
+        <script id="sap-ui-bootstrap"
+            src="http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5/resources/sap-ui-core.js"
+            data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.ui.ux3"></script>
+
+
+<script id='TreeTableExampleScript1' type="text/javascript">
+
+oModel = new sap.ui.model.xml.XMLModel();
+oModel.setXML(
+"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" +
+"<ns2:scorecardDTOes xmlns:ns2=\"http://sap.com/xapp/epm/sm\">" +
+    "<ns2:Scorecard periodicity=\"MONTHLY\" period=\"Mar 2006\">" +
+        "<ns2:Node assocInitiative=\"false\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/context/125757675372788\" trend=\"FLAT\" siblingOrder=\"0\" score=\"4.0\" nodeTypeId=\"0\" nodeLibraryId=\"0\" name=\"ForSAPUI5\" levelId=\"0\" levelNo=\"0\" levelName=\"context\" latestPeriod=\"Mar 2006\" latestMinus2PeriodScore=\"4.0\" latestMinus2Period=\"Jan 2006\" latestMinus1PeriodScore=\"4.0\" latestMinus1Period=\"Feb 2006\" isLeaf=\"false\" id=\"125757675372788\" unreadComments=\"0\" countComments=\"0\">" +
+            "<ns2:Property value=\"1\" type=\"integer\" name=\"CALC_METHOD\"/>" +
+            "<ns2:Node weight=\"0\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125763075372890\" trend=\"FLAT\" siblingOrder=\"0\" score=\"4.0\" nodeTypeId=\"110316811541696\" nodeLibraryId=\"110361362558044\" name=\"Customer\" levelId=\"110319011541712\" levelNo=\"1\" levelName=\"Perspective\" latestPeriod=\"Mar 2006\" latestMinus2PeriodScore=\"4.0\" latestMinus2Period=\"Jan 2006\" latestMinus1PeriodScore=\"4.0\" latestMinus1Period=\"Feb 2006\" isLeaf=\"false\" id=\"125763075372890\" unreadComments=\"0\" countComments=\"0\">" +
+                "<ns2:Description>Pilot Fashions Customer Perspective - How do we appear to our customers?  Measure: Gross Margin per Customer = Gross Margin / Number of Customers</ns2:Description>" +
+                "<ns2:Property value=\"2\" type=\"integer\" name=\"CALC_METHOD\"/>" +
+                "<ns2:Node weight=\"1\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125832875373679\" trend=\"FLAT\" siblingOrder=\"0\" score=\"4.0\" nodeTypeId=\"110316811541696\" nodeLibraryId=\"110356562558044\" name=\"Be a trusted advisor for fashion\" levelId=\"110319111541712\" levelNo=\"2\" levelName=\"Objective\" latestPeriod=\"Mar 2006\" latestMinus2PeriodScore=\"4.0\" latestMinus2Period=\"Jan 2006\" latestMinus1PeriodScore=\"4.0\" latestMinus1Period=\"Feb 2006\" isLeaf=\"false\" id=\"125832875373679\" unreadComments=\"0\" countComments=\"0\">" +
+                    "<ns2:Description>In order for us to be successful we need our customers to not only buy from us but to consider us as their trusted advisor. This means that our customers will look to us for the latest trends and also tools that will help them improve their appearance.</ns2:Description>" +
+                    "<ns2:Property value=\"2\" type=\"integer\" name=\"CALC_METHOD\"/>" +
+                    "<ns2:Node weight=\"40\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125782875373173\" trendValue=\"0.83\" trend=\"DOWN\" targetChange=\"0.20\" target=\"00.82\" siblingOrder=\"0\" score=\"1.21\" previousTarget=\"0.82\" previousActual=\"0.83\" nodeTypeId=\"110319211541712\" nodeLibraryId=\"110340611541853\" name=\"Customer Loyalty Rate\" levelId=\"110324211541743\" levelNo=\"3\" levelName=\"KPI\" isLeaf=\"true\" id=\"125782875373173\" unreadComments=\"0\" countComments=\"0\" actualChange=\"0.03\" actual=\"00.83\" pasDimList=\"CUSTOMER\">" +
+                        "<ns2:Description>Customer Loyalty Rate = Number of Repeat Customers / Number of Customers</ns2:Description>" +
+                        "<ns2:Property displayName=\"Leading/Lagging\" value=\"Lagging\" type=\"list\" name=\"LEAD_LAG\"/>" +
+                        "<ns2:Property displayName=\"Qualitative/Quantitative\" value=\"Quantitative\" type=\"list\" name=\"QUAL_QUANT\"/>" +
+                        "<ns2:Status name=\"On Target\" color=\"yellow\"/>" +
+                        "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                    "</ns2:Node>" +
+                    "<ns2:Node weight=\"20\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125806375373371\" trendValue=\"29915.67\" trend=\"FLAT\" targetChange=\"28.35\" target=\"028663.00\" siblingOrder=\"1\" score=\"20.27\" previousTarget=\"22332.00\" previousActual=\"27188.00\" nodeTypeId=\"110319211541712\" nodeLibraryId=\"110346211541884\" name=\"Customer Traffic\" levelId=\"110324211541743\" levelNo=\"3\" levelName=\"KPI\" isLeaf=\"true\" id=\"125806375373371\" unreadComments=\"0\" countComments=\"0\" actualChange=\"26.80\" actual=\"034474.00\" pasDimList=\"CUSTOMER PRODUCT STORE\">" +
+                        "<ns2:Description>Customer Traffic = Number of Customers</ns2:Description>" +
+                        "<ns2:Property displayName=\"Leading/Lagging\" value=\"Lagging\" type=\"list\" name=\"LEAD_LAG\"/>" +
+                        "<ns2:Property displayName=\"Qualitative/Quantitative\" value=\"Quantitative\" type=\"list\" name=\"QUAL_QUANT\"/>" +
+                        "<ns2:Status name=\"Well Above\" color=\"dark green\"/>" +
+                        "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                    "</ns2:Node>" +
+                    "<ns2:Status name=\"Above\" color=\"green\"/>" +
+                    "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                "</ns2:Node>" +
+                "<ns2:Node weight=\"1\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125834975373727\" trend=\"FLAT\" siblingOrder=\"1\" score=\"4.0\" nodeTypeId=\"110316811541696\" nodeLibraryId=\"110356762558044\" name=\"Become a destination store for high-quality, stylish accessories\" levelId=\"110319111541712\" levelNo=\"2\" levelName=\"Objective\" latestPeriod=\"Mar 2006\" latestMinus2PeriodScore=\"4.0\" latestMinus2Period=\"Jan 2006\" latestMinus1PeriodScore=\"4.0\" latestMinus1Period=\"Feb 2006\" isLeaf=\"false\" id=\"125834975373727\" unreadComments=\"0\" countComments=\"0\">" +
+                    "<ns2:Description>Become a destination store for high-quality stylish accessories</ns2:Description>" +
+                    "<ns2:Property value=\"1\" type=\"integer\" name=\"CALC_METHOD\"/>" +
+                    "<ns2:Node weight=\"0\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125806375373371\" trendValue=\"29915.67\" trend=\"FLAT\" targetChange=\"28.35\" target=\"028663.00\" siblingOrder=\"1\" score=\"20.27\" previousTarget=\"22332.00\" previousActual=\"27188.00\" nodeTypeId=\"110319211541712\" nodeLibraryId=\"110346211541884\" name=\"Customer Traffic\" levelId=\"110324211541743\" levelNo=\"3\" levelName=\"KPI\" isLeaf=\"true\" id=\"125806375373371\" unreadComments=\"0\" countComments=\"0\" actualChange=\"26.80\" actual=\"034474.00\" pasDimList=\"CUSTOMER PRODUCT STORE\">" +
+                        "<ns2:Description>Customer Traffic = Number of Customers</ns2:Description>" +
+                        "<ns2:Property displayName=\"Leading/Lagging\" value=\"Lagging\" type=\"list\" name=\"LEAD_LAG\"/>" +
+                        "<ns2:Property displayName=\"Qualitative/Quantitative\" value=\"Quantitative\" type=\"list\" name=\"QUAL_QUANT\"/>" +
+                        "<ns2:Status name=\"Well Above\" color=\"dark green\"/>" +
+                        "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                    "</ns2:Node>" +
+                    "<ns2:Node weight=\"0\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125770375373065\" trendValue=\"66042.33\" trend=\"FLAT\" targetChange=\"29.53\" target=\"060819.00\" siblingOrder=\"2\" score=\"25.20\" previousTarget=\"46952.00\" previousActual=\"59826.00\" nodeTypeId=\"110319211541712\" nodeLibraryId=\"110370911541962\" name=\"Store Units Sold\" levelId=\"110324211541743\" levelNo=\"3\" levelName=\"KPI\" isLeaf=\"true\" id=\"125770375373065\" unreadComments=\"0\" countComments=\"0\" actualChange=\"27.28\" actual=\"076146.00\" pasDimList=\"CUSTOMER PRODUCT STORE\">" +
+                        "<ns2:Description>Store Units Sold = Units Sold</ns2:Description>" +
+                        "<ns2:Property displayName=\"Leading/Lagging\" value=\"Leading\" type=\"list\" name=\"LEAD_LAG\"/>" +
+                        "<ns2:Property displayName=\"Qualitative/Quantitative\" value=\"Quantitative\" type=\"list\" name=\"QUAL_QUANT\"/>" +
+                        "<ns2:Status name=\"Well Above\" color=\"dark green\"/>" +
+                        "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                    "</ns2:Node>" +
+                    "<ns2:Node weight=\"0\" assocInitiative=\"true\" abnormalKpiPerformance=\"false\" uri=\"/strategy/rest/node/125785775373197\" trendValue=\"2.21\" trend=\"FLAT\" targetChange=\"0.92\" target=\"02.12\" siblingOrder=\"3\" score=\"4.10\" previousTarget=\"2.10\" previousActual=\"2.20\" nodeTypeId=\"110319211541712\" nodeLibraryId=\"110363011541931\" name=\"Units per Customer\" levelId=\"110324211541743\" levelNo=\"3\" levelName=\"KPI\" isLeaf=\"true\" id=\"125785775373197\" unreadComments=\"0\" countComments=\"0\" actualChange=\"0.38\" actual=\"02.21\" pasDimList=\"CUSTOMER PRODUCT STORE\">" +
+                        "<ns2:Description>Units per Customer = Units Sold / Number of Customers</ns2:Description>" +
+                        "<ns2:Property displayName=\"Leading/Lagging\" value=\"Leading\" type=\"list\" name=\"LEAD_LAG\"/>" +
+                        "<ns2:Property displayName=\"Qualitative/Quantitative\" value=\"Quantitative\" type=\"list\" name=\"QUAL_QUANT\"/>" +
+                        "<ns2:Status name=\"On Target\" color=\"yellow\"/>" +
+                        "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                    "</ns2:Node>" +
+                    "<ns2:Status name=\"Above\" color=\"green\"/>" +
+                    "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+                "</ns2:Node>" +
+                "<ns2:Status name=\"Above\" color=\"green\"/>" +
+                "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+            "</ns2:Node>" +
+            "<ns2:Status name=\"Above\" color=\"green\"/>" +
+            "<ns2:Responsible realName=\"Admin, Pip\" name=\"pipadmin\" id=\"USER.PRIVATE_DATASOURCE.un:pipadmin\"/>" +
+        "</ns2:Node>" +
+    "</ns2:Scorecard>" +
+"</ns2:scorecardDTOes>"
+);
+
+//Create an instance of the table control
+var oTable = new sap.ui.table.TreeTable({
+	columns: [
+		new sap.ui.table.Column({label: "Name", template: "@name"})
+	],
+	selectionMode: sap.ui.table.SelectionMode.Single,
+	allowColumnReordering: true,
+	expandFirstLevel: true,
+	toggleOpenState: function(oEvent) {
+		var iRowIndex = oEvent.getParameter("rowIndex");
+		var oRowContext = oEvent.getParameter("rowContext");
+		var bExpanded = oEvent.getParameter("expanded");
+		alert("rowIndex: " + iRowIndex +
+				" - rowContext: " + oRowContext.getPath() +
+				" - expanded? " + bExpanded);
+	}
+});
+
+oTable.setModel(oModel);
+oModel.setNameSpace("http://sap.com/xapp/epm/sm", "ns2");
+	oTable.bindRows("/ns2:Scorecard");
+
+//Bring the table onto the UI
+oTable.placeAt("sample1");
+
+</script>
+
+	</head>
+	<div id="sample1"></div>
+
+</body>
+</html>
+<!-- user:Mariano Santangelo --><!-- description:Try to populate a TreeTable with Rest call result -->
+<!-- user:d039071 --><!-- description:TreeTable + XML -->

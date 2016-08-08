@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html>
+       <head>
+              <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+              <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+          <script     id="sap-ui-bootstrap"
+                      type="text/javascript"
+                      src="http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5/resources/sap-ui-core.js"
+                      data-sap-ui-theme="sap_bluecrystal"
+                      data-sap-ui-libs="sap.ui.commons,sap.ui.table" >
+          </script>
+              <!-- add sap.ui.table,sap.ui.ux3 and/or other libraries to 'data-sap-ui-libs' if required -->
+
+          <script  type="text/javascript">
+        $(function(){
+        
+        var stepName = getUrlVars() ["guid"];
+          if(!stepName)
+            {
+                stepName = 'Sales';
+	          }
+            var oData = {
+                root:{
+                  name: "root",
+                  src: "",
+                  checked: false,
+                  0:{
+                  name: stepName,
+                  visible:false,
+                    checked: false
+                  },
+                  1: {
+                    name: "Sales Order Management",
+                      src: "penguins.jpg",
+                      checked: true,
+                    0: {
+                      name: "MO - Sales Document",
+                          src: "penguins.jpg",
+                          visible:false,
+                          checked: true,
+                      0: {
+                        name: "KeyFig - Sales Document (Created)",
+                              src: "Penguins.jpg",
+                              checked: true
+                      },
+                      1: {
+                        name: "KeyFig - Sales Document (Completed)",
+                              src: "images/status_complete.png",
+                              checked: true
+                      }
+                    },
+                    1: {
+                      name: "Steps Of Process",
+                          src: "",
+                          visible:false,
+                          checked: true,
+                      0: {
+                              name: "Replicate to ERP",
+                              src: "Penguins.jpg",
+                              checked: true,
+                              0: {
+                                    name: "MO - Replicate TO ERP",
+                                    src: "",
+                                    visible:false,
+                                    checked: true,
+                                    0: {
+                                        name: "KeyFig - Sales Document (Created)",
+                                        src: "Penguins.jpg",
+                                        checked: true
+                                        },
+                                    1: {
+                                        name: "KeyFig - Sales Document (Completed)",
+                                        src: "images/status_complete.png",
+                                        checked: true
+                                        }
+                                  }
+                          },
+                       1: {
+                              name: "Check Availability",
+                              src: "Penguins.jpg",
+                              checked: true,
+                              0: {
+                                    name: "MO - Check Availability",
+                                    src: "",
+                                    visible:false,
+                                    checked: true,
+                                    0: {
+                                        name: "KeyFig - Sales Document (Created)",
+                                        src: "Penguins.jpg",
+                                        checked: true
+                                        },
+                                    1: {
+                                        name: "KeyFig - Sales Document (Completed)",
+                                        src: "images/status_complete.png",
+                                        checked: true
+                                        }
+                                }
+                          },
+                          2: {
+                              name: "Create Planned Order",
+                              src: "Penguins.jpg",
+                              checked: true,
+                              0: {
+                                    name: "MO - Cretae Planned Order",
+                                    src: "",
+                                    visible:false,
+                                    checked: true,
+                                    0: {
+                                        name: "KeyFig - Sales Document (Created)",
+                                        src: "Penguins.jpg",
+                                        checked: true
+                                        },
+                                    1: {
+                                        name: "KeyFig - Sales Document (Completed)",
+                                        src: "images/status_complete.png",
+                                        checked: true
+                                        }
+                                }
+                          }                          
+                    }
+
+                  },
+
+                }
+            };
+
+            //Create an instance of the table control
+            var oTable = new sap.ui.table.TreeTable({
+              columns: [
+                new sap.ui.table.Column({label: "Name", template: "name"}),
+                new sap.ui.table.Column({label: "Rating", template: new sap.ui.commons.Image({width:"18px", height:"18px"}).bindProperty("src", "src").bindProperty("visible", "visible"),  hAlign: "Center", width:"75px"}),
+                new sap.ui.table.Column({label: "Value", template: "value"})
+              ],
+              selectionMode: sap.ui.table.SelectionMode.Single,
+              allowColumnReordering: true,
+              expandFirstLevel: true,
+              toggleOpenState: function(oEvent) {
+            	  var rows = oTable.getRows();
+                var iRowIndex = oEvent.getParameter("rowIndex");
+                var oRowContext = oEvent.getParameter("rowContext");
+                var bExpanded = oEvent.getParameter("expanded");
+                alert("rowIndex: " + iRowIndex +
+                    " - rowContext: " + oRowContext.getPath() +
+                    " - expanded? " + bExpanded);
+              }
+            });
+
+            //Create a model and bind the table rows to this model
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setData(oData);
+            
+            //var numRow = calculateExpandRow(stepName);
+            oTable.setModel(oModel);
+            oTable.bindRows("/root");
+            
+            
+            // ===================================================
+            
+            // find all entries with ERP
+            var oBinding = oTable.getBinding("rows");
+            var aExpandContexts = [];
+            var fnLookup = function(aContexts, sPath, sString) {
+                var bMatches = false;
+                jQuery.each(aContexts, function(iIndex, oContext) {
+                    var bInnerMatches = fnLookup(oBinding.getNodeContexts(oContext), sPath, sString);
+                    if (bInnerMatches || oContext.getProperty(sPath).indexOf(sString) >= 0) {
+                        aExpandContexts.push(oContext);
+                        bMatches = true;
+                    }
+                    bMatches = bMatches || bInnerMatches;
+                });
+                return bMatches;
+            };
+            fnLookup(oBinding.getRootContexts(), "name", "ERP");
+            
+            // expand all contexts for ERP
+            for (var i = aExpandContexts.length - 1; i >= 0; i--) {
+                oBinding.expandContext(aExpandContexts[i]);
+            }
+            
+            // ===================================================
+
+            
+            oTable.placeAt("content");
+
+        });
+ 
+  function getUrlVars() {
+        var vars = {};
+        var  parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+          vars[key] = value;
+        });
+        return vars;
+      }
+  </script>
+
+       </head>
+       <body class="sapUiBody" >
+              <div id="content" ></div>
+       </body>
+</html>
+<!-- user:d039071 --><!-- description:TreeTable / expand nodes -->

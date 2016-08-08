@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>test</title>
+
+<script id="sap-ui-bootstrap"
+        type="text/javascript"
+        src="../1.21/resources/sap-ui-core-all-dbg.js"
+        data-sap-ui-theme="sap_bluecrystal"
+        data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.m"></script>
+
+<style type="text/css">
+</style>
+<script>
+    sap.ui.localResources("fin");
+</script>
+
+<script  src="fin/rc/hier/HierTable.js"></script>  
+<script  src="SampleDemoData.js"> </script>
+<script  src="HierTableSampleApp.js"> </script>
+
+<script>
+//!!just chagne here to show the real OData
+var oHierTable = createDemoHierhierTable(true);
+oHierTable.placeAt("uiHierTable");
+
+var t = oHierTable;
+var um = t.getUpdateMng();
+</script>
+
+</head>
+
+<body class='sapUiBody'>
+    <h2> This sample application show how to use the HierTable </h2>
+    <h4> if the odata service is not work, just change this file createDemoHierhierTable(false) from false to true to see the local data </h4>
+    <div id='uiHierTable'></div>
+</body>
+
+</html>

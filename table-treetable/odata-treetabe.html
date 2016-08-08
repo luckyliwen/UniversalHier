@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title>test</title>
+
+<script type="text/javascript" src="sinon.js"></script>
+
+<script
+src= 'http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5/resources/sap-ui-core-all-dbg.js'
+       data-sap-ui-theme='sap_goldreflection'
+       data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'>
+       //src= 'http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5/resources/sap-ui-core.js'
+</script>
+
+<script>
+//define a popup
+              
+              var oPopupData = {
+                     id : " ", 
+                     name : " ",
+                     p_id : " ",
+                     descr : " "
+              };            
+
+              var oPopupPanel = new sap.ui.commons.Panel();
+
+              var oPopupLabelID = new sap.ui.commons.Label({ id : "PopID", text : 'Hierarchy ID'});
+
+              var oPopupTxtID = new sap.ui.commons.TextField({ value : "{Popmodel>/id}" });
+
+              var oPopupLabelName = new sap.ui.commons.Label({ id : "PopName", text : 'Hierarchy Name' });
+
+              var oPopupTxtName = new sap.ui.commons.TextField({ value : "{Popmodel>/name}"});
+              
+              var oPopupLabelPrt = new sap.ui.commons.Label({ id : "PopPrt", text : 'Parent Node' });
+
+              var oPopupTxtPrt = new sap.ui.commons.TextField({ value : "{Popmodel>/p_id}"});   
+              
+              var oPopupLabelDescr = new sap.ui.commons.Label({ id : "PopDescr", text : 'Hierarchy Description' });
+
+              var oPopupTxtDescr = new sap.ui.commons.TextField({ value : "{Popmodel>/descr}"});       
+
+              var oPopupLayout = new sap.ui.commons.layout.VerticalLayout( "Layout2", {
+                                  content : [ oPopupLabelID, oPopupTxtID,
+                                                oPopupLabelName, oPopupTxtName, oPopupLabelPrt, oPopupTxtPrt, 
+                                                oPopupLabelDescr, oPopupTxtDescr
+                                                ]
+                           });
+              
+              
+              var vUpdMode = 0;
+
+              var oPopupModel = new sap.ui.model.json.JSONModel();
+              oPopupModel.setData(oPopupData);
+
+              sap.ui.getCore().setModel(oPopupModel, "Popmodel");
+                                  
+              var oConfirmBtn = new sap.ui.commons.Button({
+                     text : "OK",
+                     press : fnConfirmChange
+              });
+              
+              var oCancelBtn = new sap.ui.commons.Button({
+                     text : "Cancel", press : function() {
+                           oDialog.close();
+                     }
+              });
+
+              var oDialog = new sap.ui.commons.Dialog("Dialog", {
+                     modal : true,
+                     buttons : [ oConfirmBtn, oCancelBtn ],
+                     content : [ oPopupLayout ]
+              });
+
+              oDialog.changeView = function(oView) {
+                     this.removeAllContent();
+                     this.addContent(oView);
+              };
+              
+
+
+       var oUrl = "https://ldai1e91.wdf.sap.corp:44300/sap/opu/odata/sap/ZLY_RMT_TREENODE";
+                       //"https://ldai1e91.wdf.sap.corp:44300/sap/opu/odata/sap/ZLY_RMT_TREENODE"; 
+               
+               
+
+       var oModela = new sap.ui.model.odata.ODataModel(oUrl,true,"LIYUAN","fkywaa");
+       
+        var oNewRow = {     
+                        ID : "",
+                     NAME : "",
+                     P_ID : "",
+                     DESCR : ""           
+        };
+       
+       oModela.setDefaultBindingMode("TwoWay");
+       
+       //on using table, must add sap.ui.table to data-sap-ui-libs in the bootstrap script of the start of html    
+       
+       sap.ui.getCore().setModel(oModela, "tModel");
+       //for using $select expand in Odata, please see 
+        //http://www.cnblogs.com/ansiboy/p/3168583.html 
+       var oTable = new sap.ui.table.TreeTable({
+              title : "Table Test",
+              visibleRowCount : 20,
+              firstVisibleRow : 0,
+              selectionMode : sap.ui.table.SelectionMode.Single,
+           columns: [
+                     {label: "ID", template: "ID", sortProperty: "ID", filterProperty: "ID"},
+                     {label: "Name", template: "NAME", sortProperty: "NAME", filterProperty: "NAME"},
+                     {label: "ParentNode", template: "P_ID", sortProperty: "P_ID", filterProperty: "P_ID"},                     
+                     {label: "Description", template: "DESCR", sortProperty: "DESCR", filterProperty: "DESCR"}
+                     ]
+       });
+
+       //Add
+      var oAddChdBtn = new sap.ui.commons.Button({
+              text : "Add", 
+              icon : "image/AddRow.png",
+              press :  fnAdd
+       });
+       
+
+       //Upd
+      var oUpdBtn = new sap.ui.commons.Button({
+              text : "Update", 
+              icon : "image/EditedItem.png",
+              press : fnUpd
+       });           
+       
+       //Delete
+      var oDelBtn = new sap.ui.commons.Button({
+              text : "Delete", 
+              icon : "image/Delete2.png",
+              press : fnDelete
+       });    
+       
+       //Expand
+    var oExpBtn = new sap.ui.commons.Button({ text : "Expand All", icon : "image/ExpandAll.png", press: fnExpandAll });      
+      
+       //Collapse All Btn
+    var oClpBtn = new sap.ui.commons.Button({ text : "Collapse All", icon : "image/CollapseAll.png", press: fnCollapseAll });    
+       
+
+       oTable.setToolbar(new sap.ui.commons.Toolbar({
+              items : [ oAddChdBtn, oDelBtn, oUpdBtn, oExpBtn, oClpBtn ]
+       }));
+             
+       oTable.setModel(oModela);
+       
+       oTable.bindRows({
+                         path : "/NodeCollection(1)",
+                           parameters : {
+                                  navigation : {
+                                         NodeCollection : "ptochd",
+                                         ptochd : "ptochd"
+                                  },
+                                  displayRootNode : true
+                           } 
+       });
+       
+       //functions
+       function fnAdd(){
+              vUpdMode = 0;
+              
+              //var iSelectedIndex = oTable.getSelectedIndex();
+              //if (iSelectedIndex > -1) {
+                oPopupTxtID.setEditable(true);  
+             oDialog.setTitle("Add");
+                oDialog.open();
+              //};                       
+              
+       };
+       
+       function fnUpd(){
+              
+              vUpdMode = 2;
+              
+              var iSelectedIndex = oTable.getSelectedIndex();
+              if (iSelectedIndex > -1) { 
+                     
+                     var oCnxt = oTable.getContextByIndex(oTable.getSelectedIndex());
+                     var oString = new String(oCnxt);
+                     oPopupTxtID.setEditable(false);
+                     
+                    oPopupData.id = (oModela.getProperty(oString + '/ID', false));
+                     oPopupData.name = (oModela.getProperty(oString + '/NAME', false));
+                     oPopupData.descr = (oModela.getProperty(oString + '/DESCR', false));
+                     oPopupData.p_id = (oModela.getProperty(oString + '/P_ID', false));
+                     oPopupModel.refresh(true);
+                     oDialog.setTitle("Update");
+                  oDialog.open();  
+              }
+
+       };
+              
+       function fnDelete(){
+
+              var iSelectedIndex = oTable.getSelectedIndex();
+              if (iSelectedIndex > -1) {
+                     
+                     jQuery.sap
+                     .require("sap.ui.commons.MessageBox");
+       sap.ui.commons.MessageBox
+                     .show(
+                                  "Do you want to remove this Node?",
+                                  sap.ui.commons.MessageBox.Icon.WARNING,
+                                  "Message",
+                           [sap.ui.commons.MessageBox.Action.YES, sap.ui.commons.MessageBox.Action.NO ],
+                                  fnDeleteNode,
+                                  sap.ui.commons.MessageBox.Action.YES);
+              }
+
+              
+       };
+       
+       function fnDeleteNode(sResult) {
+              if (sResult == 'YES') {
+            
+                     var oNewEnt = new sap.ui.model.Context();
+                     
+                     var oCnxt = oTable.getContextByIndex(oTable.getSelectedIndex());
+                     var oString = new String(oCnxt);
+                    oModela.remove(oString); 
+                  oModela.refresh(true);
+
+              }else{
+                     return;
+              }
+       };
+       
+       function fnExpandAll(){
+              
+              
+/*            var oTa = 0;
+              oTable.expand(0);
+              for (var k in oTable.getRows()){
+                     oTa = oTa + 1;
+              }
+              alert(oTa); */
+              
+       }
+       
+       function fnCollapseAll(){
+              
+              var oRowNumBefore = 0;
+              for (var key in oModela.oData){
+                     oRowNumBefore = oRowNumBefore + 1;
+              }
+
+             var oRowNumAfter = 0;
+              for (var key in oModela.oData){
+                  oTable.collapse(oRowNumAfter); 
+                     oRowNumAfter = oRowNumAfter + 1;
+                     }      
+
+           if (oRowNumBefore != oRowNumAfter){
+              fnCollapseAll();
+           } 
+              
+              //visible row count: alert(oTable.mBindingInfos.rows.binding.aContexts.length);   
+       }      
+       
+       function fnConfirmChange(){                                   
+              if (!oPopupData.id){
+                     alert("Enter hierarchy details");
+                     return;
+              }
+              oDialog.close();
+       
+                     switch (vUpdMode)
+                     {
+                     case 0://add
+                           var oNew = new sap.ui.model.Context();
+                           oNew = oModela.createEntry("/NodeCollection"); 
+                           var oCo = oNew.getObject();
+                          oCo.ID = parseInt(oPopupData.id)
+                           oCo.NAME = oPopupData.name;
+                           oCo.P_ID = parseInt(oPopupData.p_id);
+                           oCo.DESCR = oPopupData.descr; 
+                         oModela.submitChanges();
+                         //oModela.refresh(true);                           
+
+                           return;
+                           
+                     case 1:
+                           //warten
+                           return;
+                  
+                           
+                     case 2: //upd
+
+                           var iSelectedIndex = oTable.getSelectedIndex();
+                           if (iSelectedIndex <= -1){
+                                  return;
+                           };                   
+                           var sPathString = new String(oTable.getContextByIndex(iSelectedIndex));                         
+                         
+                           var oUpd = {};
+                           oUpd.ID = parseInt(oPopupData.id);
+                           oUpd.NAME = oPopupData.name;
+                           oUpd.P_ID = parseInt(oPopupData.p_id);
+                            oUpd.DESCR = oPopupData.descr;
+                         var oParams = {};
+                         //oParams.fnSuccess = function(){ };
+                         //oParams.fnError = function(){ };
+                         //oParams.bMerge = true;    
+                           oModela.update(sPathString, oUpd, oParams);
+                           //oModela.refresh(true);
+                            
+                           return;                                                
+                           
+                     default:
+                           return;
+       
+              }
+
+    };                     
+       
+       
+
+       oTable.placeAt("content3"); 
+       
+
+</script>
+<body class="sapUiBody" role="application">
+       <div id="content0"></div>
+       <div id="content3"></div>
+       <div id="content1"></div>
+</body>
+</html>
+
+

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>test</title>
+
+<script id="sap-ui-bootstrap"
+        type="text/javascript"
+        src="../../1.21/resources/sap-ui-core-all-dbg.js"
+        data-sap-ui-theme="sap_bluecrystal"
+        data-sap-ui-libs="sap.ui.commons,sap.ui.table"></script>
+<style type="text/css">
+    
+</style>
+
+<script>
+
+
+//Define some sample data, way 1: use the normal json format
+var oData1 = {
+        root:{
+                0: {
+                    name: " item 0 ",
+                    description: "item 0  description",
+                    checked: true,
+                    0: {
+                        name: "item0-0",
+                        description: "subitem2-1 description",
+                        checked: true
+                    }
+                },
+                
+                1:{
+                    name: "item1",
+                    description: "item1 description",
+                    checked: true,
+                    0: {
+                        name: "item1-0",
+                        description: "subitem2-1 description",
+                        checked: true
+                    }
+                },
+                2:{
+                    name: "item2",
+                    description: "item2 description",
+                    checked: true,
+                    0: {
+                        name: "item2-0",
+                        description: "subitem2-1 description",
+                        checked: true
+                    }
+                    
+                }
+        }
+};
+
+//way 2: use the d3 format
+var oData = {
+        root:{
+            children: [
+                {
+                    name: " item 0 ",
+                    description: "item 0  description",
+                    checked: true,
+                    children: [
+                        {name: "item0-0",
+                            description: "subitem2-1 description",
+                            checked: true,
+
+                            children: [
+                                {
+                                    name: "item0-0-0",
+                                    description: "item0-0-0 description",
+                                    checked: true
+                                },    
+                            ]
+                        },
+                        
+                        {name: "item0-1",
+                        description: "subitem2-1 description",
+                        checked: true},
+                    ]
+                },
+                
+                {
+                    name: "item1",
+                    description: "item1 description",
+                    checked: true,
+                    children: [
+                        {name: "item1-0",
+                        description: "subitem2-1 description",
+                        checked: true}
+                    ]
+                },
+                
+                {
+                    name: "item2",
+                    description: "item2 description",
+                    checked: true,
+                    chidlren: [{
+                        name: "item2-0",
+                        description: "subitem2-1 description",
+                        checked: true
+                    }]
+                    
+                },
+
+                {
+                    name: "item3",
+                    description: "item3 description",
+                }
+            ]
+                
+    }
+    
+};
+
+
+var nameTextView = new sap.ui.commons.TextView({
+    text: {
+        path: 'name',
+        formatter: function(val) {
+            console.log('name formatter:', val);
+            return val;
+        }
+    }
+});
+
+//Create an instance of the table control
+var oTable = new sap.ui.table.TreeTable({
+    columns: [
+        new sap.ui.table.Column({label: "Name", template: nameTextView,
+            sortProperty: "name", filterProperty: "name", width: "200px"   
+        }),
+        // new sap.ui.table.Column({label: "Description", template: "description"})
+    ],
+    selectionMode: sap.ui.table.SelectionMode.Single,
+    allowColumnReordering: true,
+    expandFirstLevel: true,
+});
+
+//Create a model and bind the table rows to this model
+var oModel = new sap.ui.model.json.JSONModel();
+oModel.setData(oData);
+oTable.setModel(oModel);
+
+oTable.bindRows("/root/children");
+
+
+var t=oTable;
+var m = oModel;
+var b = t.getBinding('rows');
+
+oTable.placeAt("uiArea");
+
+</script>
+
+</head>
+
+<body class='sapUiBody'>
+    <div id='uiArea'></div>
+</body>
+
+</html>

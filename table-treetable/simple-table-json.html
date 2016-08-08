@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<title>sap.ui.table.DataTable Test Page</title>
+<link rel="shortcut icon" type="image/x-icon" href="images/controls/sap.ui.table.DataTable.gif">
+
+<!-- ********************************************************************** -->
+<!-- SAPUI5 Bootstrap:                                                     -->
+<!-- Extend the "libs" property if you like to import additional libraries  -->
+<!-- ********************************************************************** -->
+<script id="sap-ui-bootstrap"
+        type="text/javascript"
+        src="../../1.21/resources/sap-ui-core-all-dbg.js"
+        data-sap-ui-theme="sap_bluecrystal"
+        data-sap-ui-libs="sap.ui.commons,sap.m,sap.ui.table"></script>
+
+<style type="text/css">
+.MyTextField {
+    background-color: blue !important;
+}
+
+.MyComobBox {
+    background-color:yellow !important;
+}
+</style>
+
+       
+<script type="text/javascript"> 
+    
+
+    //var oTable = new sap.ui.table.DataTable();
+    //var oTable = new sap.ui.table.TreeTable( {
+var oTable = new sap.ui.table.Table( {
+        selectionBehavior:sap.ui.table.SelectionBehavior.RowOnly,
+            selectionMode : sap.ui.table.SelectionMode.Single,
+            allowColumnReordering : true,
+            showNoData: false,
+            //expandFirstLevel : true
+        }
+    );
+    oTable.setFirstVisibleRow(0);
+    //oTable.setExpandedVisibleRowCount(20);
+    //oTable.setTitle("DataTable");
+    
+    oTable.setTitle( "Views");
+    
+    oTable.setVisibleRowCount(2);
+    
+    
+    var aData = [
+        {lastName: "Dente 1", name: "Al", checked: true,       rating: 1},
+        {lastName: "Friese 2", name: "Andy", checked: true,    rating: 2},
+        {lastName: "Friese 2", name: "Anita", checked: false,  rating: 3},
+        {lastName: "Schutt 4", name: "Doris", checked: true,   rating: 4},
+       
+    ];
+
+   
+    var oControl = new sap.ui.commons.TextView().bindProperty("text", {
+        path: 'lastName',
+        formatter: function(v) {
+            console.error("call format ", v);
+            return 'hello ' + v;
+        }
+    });
+    
+    var col0 = new sap.ui.table.Column(
+        {
+            label: new sap.ui.commons.Label({text: "Last Name"}), 
+            template: oControl, 
+            sortProperty: "lastName", filterProperty: "lastName", width: "200px"    
+        }
+    );
+
+    oTable.addColumn(col0);
+
+
+    var col1 = new sap.ui.table.Column(
+        {
+            label: new sap.ui.commons.Label({text: "Rating"}), 
+            template: new sap.m.Input({value: '{rating}'}), 
+            sortProperty: "rating", filterProperty: "rating", width: "200px"    
+        }
+    );
+    oTable.addColumn(col1);
+    
+
+    
+    var oModel = new sap.ui.model.json.JSONModel();
+    oModel.setDefaultBindingMode('TwoWay');
+    oModel.setData(aData);
+    
+    oTable.setModel(oModel);
+    oTable.bindRows("/");
+    
+    oTable.placeAt("target1");
+    
+    function chgProp() {
+        //var ln = aData[0].lastName ;
+        var ctx = oTable.getContextByIndex(0);
+        var ov= oModel.getProperty("lastName", ctx);
+        oModel.setProperty("lastName", "===" + ov, ctx);
+    }
+    
+    function applyData1() {
+        oModel.setData({modelData: aData.slice(0, 1)});
+    }
+    
+    function applyData2() {
+        oModel.setData({modelData: aData});
+    }
+    
+    function applyData3() {
+        aData[0].lastName = "==" + aData[0].lastName;
+        oModel.setData({modelData: aData});
+    }
+    
+    function concatData1() {
+        var aNewData = oModel.getData().modelData.concat(aData.slice(0, 1));
+        oModel.setData({modelData: aNewData});
+    }
+    
+    function concatData2() {
+        var aNewData = oModel.getData().modelData.concat(aData);
+        oModel.setData({modelData: aNewData});
+    }
+    
+    var t = oTable;
+    var m =oModel;
+
+    function  dbgModel(model) {
+        model.aBindings.forEach( function(binding, i) {
+            console.error( 'binding ', i, binding.toString());
+        });    
+        
+    }
+    
+
+</script>
+
+</head>
+
+<body class="sapUiBody" role="application">
+
+<h1>Test Page for <code>sap.ui.table.DataTable</code></h1>
+
+<p>
+<div id="target1"></div>
+
+<p>
+
+</body>
+</html>

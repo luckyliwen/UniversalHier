@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+	<script id='sap-ui-bootstrap' type='text/javascript'
+	src="../../1.21/resources/sap-ui-core-all-dbg.js"
+	data-sap-ui-theme='sap_goldreflection'
+	data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'></script>
+	<!-- add 'sap.ui.table' and/or other libraries if required -->
+	<script>
+		var sourceData = {
+			nodes : [{
+				checked : false,
+				tag : "addr",
+				name : "Address",
+				occurence : "1",
+				length : "10",
+				nodes : [{
+					checked : true,
+					tag : "city",
+					name : "City",
+					occurence : "1",
+					length : "4"
+				},{
+					checked : true,
+					tag : "state",
+					name : "State",
+					occurence : "1",
+					length : "3"
+				},{
+					checked : false,
+					tag : "country",
+					name : "Country",
+					occurence : "1",
+					length : "3"
+				}]
+			
+			}]
+		};
+		var hcTemplate= new sap.ui.commons.TextField({ editable:"{checked }"}).bindProperty("value", "length");
+		var oTable = new sap.ui.table.TreeTable({
+			selectionMode : sap.ui.table.SelectionMode.Single, // sap.ui.table.SelectionMode
+			selectionBehavior : sap.ui.table.SelectionBehavior.RowOnly, // sap.ui.table.SelectionBehavior
+			columns : [
+				new sap.ui.table.Column({label:"Structure (Tag)", template: "tag"}),
+				new sap.ui.table.Column({label:"Name", template: "name"}),
+				new sap.ui.table.Column({label:"Occurence", template: "occurence"}),
+				new sap.ui.table.Column({label:"Length", template: hcTemplate})]
+		});
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(sourceData);
+		oTable.setModel(oModel);
+		oTable.placeAt("content");
+		oTable.bindRows("/nodes");
+	</script>
+	</head>
+	<body class='sapUiBody'>
+		<div id='content'></div>
+	</body>
+</html>
+<!-- user:Mouli Kalakota --><!-- description:Tree table data binding conflict -->
+<!-- user:gopal --><!-- description:TreeTable edit -->

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+
+		// ------------------------------------------------------------------
+		// Expand the 'sub0' item in the tree table and click on the
+		// check box of the 'sub0' item
+		// => the selection state of 'medi', 'View2' and 'View4' will
+		// change accordingly.
+		// ------------------------------------------------------------------
+		
+		var oData = {
+				root: {
+						sub: 1,
+						checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+						content: "",
+						0: {
+							sub: 4,
+							checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+							content: "medi",
+							0: {
+								sub: 0,
+								checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+								content: "View 3",										
+							},
+							1: {
+								sub: 2,
+								checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+								content: "sub0",
+
+								0: {
+									sub: 0,
+									checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+									content: "View 2",
+								},
+								1: {
+									sub: 0,
+									checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+									content: "View 4",
+								},
+							},
+							2: {
+								sub: 3,
+								checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+								content: "sub1",
+									viewID: "",
+								0: {
+									sub: 0,
+									checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+									content: "View 7",
+								},
+								1: {
+									sub: 1,
+									checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+									content: "subsub0",
+ 									0: {
+										sub: 0,
+										checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+										content: "View 1",
+ 									},     									
+								},
+								2: {
+									sub: 1,
+									checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+									content: "subsub1",
+ 									0: {
+										sub: 0,
+										checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+										content: "View 5",
+ 									},     									
+								},
+							},
+							3: {
+								sub: 1,
+								checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+								content: "sub2",
+								0: {
+									sub: 0,
+									checked: sap.ui.commons.TriStateCheckBoxState.Unchecked,
+									content: "View 6",
+								}
+							}
+						}
+					}
+		};           
+
+
+		var oTSCB = new sap.ui.commons.TriStateCheckBox({  	  			
+					id: "TSCB",
+					change: TSCBchange
+		});
+		oTSCB.bindProperty("text", "content");
+		oTSCB.bindProperty("selectionState", "checked");
+
+		var oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oData);
+		
+
+		var oColumn = new sap.ui.table.Column({id: "ColContent", label: "View", template: oTSCB, visible: true});
+		
+		var oTreeTable = new sap.ui.table.TreeTable({
+			columns: oColumn,
+			id: "TreeTable",
+			selectionMode: sap.ui.table.SelectionMode.Single,
+			expandFirstLevel: true,
+			showColumnVisibilityMenu: true,
+			enableColumnReordering: false,
+			visibleRowCount: 20
+		});			
+		oTreeTable.setModel(oModel);
+		oTreeTable.bindRows("/root");
+		
+		
+		function TSCBchange(oEvent){
+			var selState = this.getSelectionState();
+			if (selState == sap.ui.commons.TriStateCheckBoxState.Checked){
+				oData["root"][0].checked = sap.ui.commons.TriStateCheckBoxState.Mixed;
+				oData["root"][0][1][0].checked = sap.ui.commons.TriStateCheckBoxState.Checked;
+				oData["root"][0][1][1].checked = sap.ui.commons.TriStateCheckBoxState.Checked;
+			}else{
+				oData["root"][0].checked = sap.ui.commons.TriStateCheckBoxState.Unchecked;
+				oData["root"][0][1][0].checked = sap.ui.commons.TriStateCheckBoxState.Unchecked;
+				oData["root"][0][1][1].checked = sap.ui.commons.TriStateCheckBoxState.Unchecked;
+			}
+			oColumn.rerender();
+		}
+		
+		oTreeTable.placeAt('content');
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user: --><!-- description:Performance test (TriStateCheckBox in TreeTable) -->

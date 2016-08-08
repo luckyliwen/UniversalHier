@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <title>test</title>
+
+    <script id='sap-ui-bootstrap' type='text/javascript'
+        src="../../1.21/resources/sap-ui-core-all-dbg.js"
+        data-sap-ui-theme='sap_goldreflection'
+        data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'></script>
+        <!-- add 'sap.ui.table' and/or other libraries if required -->
+
+<script>
+    
+    var cat1=new Object();
+    cat1.name="Building";
+    cat1.description="New Building Cat";
+    var cat1Chikdren =  new Array();
+    
+    var cat11= new Object();
+    cat11.name="Expenses";
+    cat11.description="New Building Expenses";
+    cat1Chikdren.push(cat11);
+    var cat12= new Object();
+    cat12.name="Revenues";
+    cat12.description="New Building Revenues";
+    cat1Chikdren.push(cat12);
+    
+    cat1.children=cat1Chikdren;
+    
+//Define some sample data 
+var oData = {
+		root:{
+			name: "root",
+			description: "root description",
+			checked: false,
+			0: {
+				name: "Construction",
+    			description: "Version1",
+    			checked: true,
+				0: {
+					name: "Expenses",
+        			description: "Expense Types",
+        			//checked: true,
+					0: {
+						name: "Salary",
+		        			description: "",
+		        			checked: true
+					},
+					1: {
+						name: "Bonus",
+		        			description: "",
+		        			checked: true
+					},
+                    2: {
+						name: "Tax",
+		        			description: "2011",
+		        			checked: true
+					}
+				},
+				1: {
+					name: "Revenues",
+        			description: "",
+		        		checked: true,
+					0: {
+						name: "Sales",
+		        			description: "subsubitem1-2-1 description",
+		        			checked: true
+					}
+				}
+				
+			},
+			1:cat1,
+			2:{
+				name: "Upgrade",
+    			description: "V1",
+    			checked: true,
+                0: {
+						name: "Initial Investment Amount",
+		        			description: "",
+		        			checked: true
+					},
+					1: {
+						name: "Operating Revenues",
+		        			description: "",
+		        			checked: true
+					},
+                    2: {
+						name: "Operating Expenses",
+		        			description: "2011",
+		        			checked: true
+					}
+              }			
+		}
+};
+
+    //for (var i = 0; i < 20; i++) {
+    //	oData["root"][2][i] = {
+    //		name: "subitem3-" + i,
+    //			description: "subitem3-" + i + " description",
+	//		checked: false
+	//};
+    //}
+
+//Create an instance of the table control
+var oTable = new sap.ui.table.TreeTable({
+	columns: [
+		new sap.ui.table.Column({label: "Name", template: "name"}),
+		new sap.ui.table.Column({label: "Description", template: "description"})
+	],
+	selectionMode: sap.ui.table.SelectionMode.Single,
+	allowColumnReordering: true,
+	expandFirstLevel: true,
+	toggleOpenState: function(oEvent) {
+		var iRowIndex = oEvent.getParameter("rowIndex");
+		var oRowContext = oEvent.getParameter("rowContext");
+		var bExpanded = oEvent.getParameter("expanded");
+		//alert("rowIndex: " + iRowIndex + 
+        //	" - rowContext: " + oRowContext.getPath() + 
+        //	" - expanded? " + bExpanded);
+	}
+});
+
+//Create a model and bind the table rows to this model
+var oModel = new sap.ui.model.json.JSONModel();
+oModel.setData(oData);
+oTable.setModel(oModel);
+oTable.bindRows("/root");
+
+//Button to demonstrate collapse and expand feature
+var oBtn = new sap.ui.commons.Button({text: "Toggle",
+	press: function() {
+		var iSelectedIndex = oTable.getSelectedIndex();
+		if (iSelectedIndex > -1) {
+			if (oTable.isExpanded(iSelectedIndex)) {
+				oTable.collapse(iSelectedIndex);
+			} else {
+				oTable.expand(iSelectedIndex);
+			}
+		}
+	}
+});
+oTable.setToolbar(new sap.ui.commons.Toolbar({items: [oBtn]}));
+
+//Bring the table onto the UI 
+oTable.placeAt("content");
+
+
+</script>
+
+</head>
+<body class='sapUiBody'>
+    <div id='content'></div>
+</body>
+</html>
+<!-- user: --><!-- description:TreeTable -->

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3,sap.ui.table'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+		
+		//Define some sample data 
+var oData = {
+		root:{
+			name: "root",
+			description: "root description",
+			checked: false,
+			children : [
+			{
+				name: "1",
+				description: "AT - G/L Account Structure",
+    			selected: true,
+				showInTree: false,
+				children: [{
+					name: "1-1",
+        			description: "Assets",
+        			selected: true,
+					showInTree: true,
+					children: [{
+						name: "1-1-1",
+		        			description: "Intangible Assets",
+		        			selected: true,
+						showInTree: true
+					},
+					{
+						name: "1-1-2",
+		        			description: "Tangible Assets",
+		        			selected: true,
+						showInTree: true
+					}]
+				},
+				{
+					name: "1-2",
+        			description: "Income Accounts",
+		        		selected: true,
+					showInTree: true,
+					children: [{
+						name: "subsubitem1-2-1",
+		        			description: "subsubitem1-2-1 description",
+		        			selected: true,
+						showInTree: true,
+					}]
+				}]
+				
+			},
+			{
+				name: "2",
+    			description: "item2 description",
+    			selected: true,
+				showInTree: true,
+				children: [{
+					name: "2-1",
+        			description: "subitem2-1 description",
+        			selected: true,
+					showInTree: true
+				}]
+			},
+			{
+				name: "3",
+    			description: "item3 description",
+    			selected: true,
+				showInTree: false
+			} ]
+			
+		}
+};
+
+
+
+//Create an instance of the table control
+var oTable = new sap.ui.table.TreeTable({
+	columns: [
+		new sap.ui.table.Column({label: "Selected", template: new sap.ui.commons.CheckBox({checked : "{selected}"})}),
+		new sap.ui.table.Column({label: "Id", template: "name"}),
+		new sap.ui.table.Column({label: "Description", template: "description"})
+	],
+	selectionMode: sap.ui.table.SelectionMode.Single,
+	allowColumnReordering: true,
+	expandFirstLevel: true,
+	toggleOpenState: function(oEvent) {
+		var iRowIndex = oEvent.getParameter("rowIndex");
+		var oRowContext = oEvent.getParameter("rowContext");
+		var bExpanded = oEvent.getParameter("expanded");
+	}
+});
+
+//Create a model and bind the table rows to this model
+var oModel = new sap.ui.model.json.JSONModel();
+oModel.setData(oData);
+oTable.setModel(oModel);
+
+		oTable.bindRows("/root");
+oTable.getBinding("rows").filter(new sap.ui.model.Filter("showInTree", sap.ui.model.FilterOperator.EQ, true), sap.ui.model.FilterType.Application);
+
+//Button to demonstrate collapse and expand feature
+var oBtn = new sap.ui.commons.Button({text: "Toggle",
+	press: function() {
+		var iSelectedIndex = oTable.getSelectedIndex();
+		if (iSelectedIndex > -1) {
+			if (oTable.isExpanded(iSelectedIndex)) {
+				oTable.collapse(iSelectedIndex);
+			} else {
+				oTable.expand(iSelectedIndex);
+			}
+		}
+	}
+});
+oTable.setToolbar(new sap.ui.commons.Toolbar({items: [oBtn]}));
+
+//Bring the table onto the UI 
+oTable.placeAt("content");
+
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'></div>
+</body>
+</html>
+<!-- user:d042958 --><!-- description:Data Model for Tree Table control -->
+<!-- user:d042958 --><!-- description:TreeTable and Filter -->

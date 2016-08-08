@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+	<title>test</title>
+
+	<script id='sap-ui-bootstrap' type='text/javascript'
+		src="../../1.21/resources/sap-ui-core-all-dbg.js"
+		data-sap-ui-theme='sap_goldreflection'
+		data-sap-ui-libs='sap.ui.commons,sap.ui.ux3, sap.ui.table'></script>
+		<!-- add 'sap.ui.table' and/or other libraries if required -->
+
+	<script>
+		var oTable1 = new sap.ui.table.TreeTable({
+			columns : [
+				new sap.ui.table.Column({label:"Column 1", template:"name"}),
+				new sap.ui.table.Column({label:"Column 2", template:"desc"})
+			]
+		});
+		var oTable2 = new sap.ui.table.TreeTable({
+			columns : [
+				new sap.ui.table.Column({label:"Column 2", template:"name"})
+			]
+		});
+		var oTable3 = new sap.ui.table.TreeTable({
+			columns : [
+				new sap.ui.table.Column({label:"Column 1", template:"srcName"}),
+				new sap.ui.table.Column({label:"Column 2", template:"tgtName"})
+			]
+		});
+		
+		var oMapData = {
+			source : {
+				items : [{
+					name : "Item 1",
+					items : [{
+						name : "Item 1-2",
+						desc: "Item 11111111"
+					}, {
+						name : "Item 1-2",
+						items : [{
+						name : "Item 1-2-1"
+					}, {
+						name : "Item 1-2-2"
+					}]
+					}]
+				}, {
+					name : "Item 2",
+					items : {
+						name : "Item 2-1"
+					}
+				}]
+			},
+			target : {
+				items : [{
+					name : "Item 3",
+					items : [{
+						name : "Item 3-1"
+					}, {
+						name : "Item 3-2"
+					}]
+				}, {
+					name : "Item 4",
+					items : {
+						name : "Item 4-1"
+					}
+				}]
+			},
+			mapping : {
+				srcName : "Item1 1-1",
+				tgtName : "Item3 3-2"
+			}
+		};
+		
+		oModel = new sap.ui.model.json.JSONModel();
+		oModel.setData(oMapData);
+		
+		oTable1.setModel(oModel);
+		oTable2.setModel(oModel);
+		oTable3.setModel(oModel);
+		
+		oTable1.bindRows("/source/items");
+		oTable2.bindRows("/target/items");
+		
+		oTable1.placeAt('table1');
+		oTable2.placeAt('table2');
+		oTable3.placeAt('table3');
+	</script>
+
+</head>
+<body class='sapUiBody'>
+	<div id='content'>
+		<div id='table1' style='display:inline-block;width:49%'>
+		</div>
+		<div id='table2' style='display:inline-block;width:49%'>
+		</div>
+		<div id='table3'>
+		</div>
+	</div>
+</body>
+</html>
+<!-- user:Mouli Kalakota --><!-- description:[TEST]: Using a single model for more than one tree table -->
+<!-- user:Mouli Kalakota --><!-- description:TreeTableTest -->
